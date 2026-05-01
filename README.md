@@ -5,6 +5,12 @@ Built with **Python Flask** (backend) + **Vanilla JS** (frontend).
 
 ---
 
+## 🔍 Preview
+
+![PhishGuard AI](preview.png)
+
+---
+
 ## 📁 Project Structure
 
 ```
