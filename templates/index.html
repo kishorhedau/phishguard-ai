@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PhishGuard AI – Fake Website Detector</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">🛡️</span>
+        <div>
+          <h1 class="logo-title">PhishGuard <span class="accent">AI</span></h1>
+          <p class="logo-sub">Fake Website Detector</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+          <span id="themeIcon">☀️</span>
+        </button>
+        <div class="header-badge">
+          <span class="pulse-dot"></span> Live Analysis
+        </div>
+      </div>
+    </header>
+
+    <!-- Input Card -->
+    <section class="input-card" role="main">
+      <p class="input-label">🔍 Enter a URL to analyze</p>
+      <div class="input-row">
+        <div class="input-wrapper">
+          <span class="input-icon">🔗</span>
+          <input type="url" id="urlInput" class="url-input"
+            placeholder="https://example.com" autocomplete="off" spellcheck="false" />
+        </div>
+        <button id="analyzeBtn" class="analyze-btn" onclick="analyzeURL()">
+          <span class="btn-text">Analyze URL</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+      <div class="examples">
+        <span class="examples-label">Try:</span>
+        <button class="example-chip" onclick="fillExample('https://google.com')">google.com ✅</button>
+        <button class="example-chip" onclick="fillExample('http://192.168.1.1/login/verify-account')">IP login 🔴</button>
+        <button class="example-chip" onclick="fillExample('http://secure-bank-login-verify.suspicious.com/account/otp')">Phishing 🚨</button>
+        <button class="example-chip" onclick="fillExample('http://free-crypto-airdrop-claim.xyz/wallet')">Crypto scam 🚨</button>
+      </div>
+    </section>
+
+    <!-- Loading -->
+    <div id="loadingEl" class="loading hidden" aria-live="polite">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">
+        <span class="loading-title">Scanning URL…</span>
+        <span class="loading-sub">Checking HTTPS · keywords · domain patterns · IP usage</span>
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div id="errorEl" class="error-card hidden" role="alert">
+      <span class="error-icon">⚠️</span>
+      <span id="errorText"></span>
+    </div>
+
+    <!-- Result Card -->
+    <section id="resultCard" class="result-card hidden" aria-live="polite">
+      <div class="result-top-row">
+        <div class="score-section">
+          <div class="gauge-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 200 110" aria-hidden="true">
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="var(--gauge-track)" stroke-width="16" stroke-linecap="round"/>
+              <path id="gaugeArc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#22c55e" stroke-width="16" stroke-linecap="round"
+                    stroke-dasharray="0 251" style="transition: stroke-dasharray 1.2s cubic-bezier(.4,0,.2,1), stroke 0.6s ease;"/>
+            </svg>
+            <div class="gauge-center">
+              <span id="scoreNumber" class="score-number">0</span>
+              <span class="score-max">/100</span>
+            </div>
+          </div>
+          <div class="classification-wrapper">
+            <div id="classificationBadge" class="classification-badge">—</div>
+            <p class="score-label">Risk Score</p>
+          </div>
+        </div>
+        <div class="action-btns">
+          <button class="action-btn" onclick="downloadReport()" title="Download report as text file">
+            📄 Download Report
+          </button>
+          <button class="action-btn secondary" onclick="toggleHistory()" title="View scan history">
+            🕐 History <span id="historyCount" class="history-count">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="analyzed-url-row">
+        <span class="analyzed-label">Analyzed:</span>
+        <span id="analyzedUrl" class="analyzed-url"></span>
+        <span id="analyzedTime" class="analyzed-time"></span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="reasons-section">
+        <h3 class="reasons-title">🧪 Detection Details</h3>
+        <ul id="reasonsList" class="reasons-list"></ul>
+      </div>
+    </section>
+
+    <!-- History Panel -->
+    <section id="historyPanel" class="history-panel hidden">
+      <div class="history-header">
+        <h3 class="history-title">🕐 Scan History</h3>
+        <div class="history-actions">
+          <button class="action-btn secondary small" onclick="clearHistory()">🗑 Clear All</button>
+          <button class="action-btn secondary small" onclick="toggleHistory()">✕ Close</button>
+        </div>
+      </div>
+      <ul id="historyList" class="history-list"></ul>
+      <p id="historyEmpty" class="history-empty">No scans yet. Analyze a URL to get started.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      🛡️ PhishGuard AI &nbsp;·&nbsp; 
+      Made by <span class="footer-name">Kishor Hedau</span> &nbsp;·&nbsp;
+      <span class="mono">Educational use only</span>
+    </footer>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
